@@ -1,0 +1,16 @@
+{
+    "name": "slonyaka/market-charts",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Sergey.s",
+            "email": "slonchakov@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Slonyaka\\Market\\": "src/"
+        }
+    }
+}
