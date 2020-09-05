@@ -5,7 +5,8 @@ namespace Slonyaka\Market\Chart;
 use Slonyaka\Market\Svg\Path;
 use Slonyaka\Market\Svg\Svg;
 
-class Line implements Chart{
+class Line implements Chart
+{
 
 	private $data;
 
@@ -60,33 +61,30 @@ class Line implements Chart{
 
 		$interval = ($this->width - $this->offset *2) / (count($this->data) - 1);
 
-		$verticalPoint = ($max - $min) / ($this->height - $this->offset);
+		$verticalPoint = ($max - $min) / $height;
 
 		foreach ($this->data as $index => $item) {
 
 			$x = $index * $interval;
-			$y = $height - (($item[$this->priceType] - $min) / $verticalPoint);
-
-			$labelPosition = $index * $interval;
-
-			if ($index !== 0) {
-				$labelPosition -= $this->offset;
-			}
-
-			$svg->addLabel($item['time'],$labelPosition, $this->height );
+			$y = $this->offset + $height - (($item[$this->priceType] - $min) / $verticalPoint);
 
 			if ($index == 0) {
 
-				$path->setStart($x + $this->offset, $y + $this->offset);
-				$pathOutline->setStart($x + $this->offset, $y+2  + $this->offset);
+				$path->setStart($x, $y);
+				$pathOutline->setStart($x, $y + 2);
+				continue;
 			} else {
 
-				$path->addPoint($x, $y + $this->offset);
-				$pathOutline->addPoint($x - 2, $y+2  + $this->offset);
+				$path->addPoint($x, $y);
+				$pathOutline->addPoint($x , $y + 2);
+			}
+
+			if ($index == count($this->data) - 1) {
+				$this->addLastPrice($svg, $x , $y + 2);
 			}
 		}
 
-		$path->close($height, $this->offset);
+		$path->close($height, 0);
 
 		$svg->setPaths([$path, $pathOutline]);
 
@@ -133,10 +131,20 @@ class Line implements Chart{
 		$width = $this->width - $this->offset;
 		$height = $this->height - $this->offset;
 
-		$svg->addLabel($min, $width, $this->height - $this->offset);
+		$svg->addLabel($min, $width, $height);
 		$svg->addLabel($max, $width, $this->offset);
 
 		$svg->addHorizontalLine($width, $height, 'min-line', 4);
 		$svg->addHorizontalLine($width, $this->offset, 'max-line', 4);
+	}
+
+	private function addLastPrice(Svg $svg, $x, $y)
+	{
+		$data = end($this->data);
+
+		$width = $this->width - $this->offset;
+
+		$svg->addLabel($data[$this->priceType], $width, $y );
+		$svg->addLine($x, $y,$width, $y, 'current-line');
 	}
 }
