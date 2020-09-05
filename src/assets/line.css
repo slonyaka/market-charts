@@ -1,0 +1,26 @@
+path {
+    stroke-width: 0;
+    stroke: none;
+    fill: #f2f2f2;
+}
+
+path + path {
+    stroke: #000;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+text {
+    font-size: 11px;
+}
+
+.min-line {
+    opacity: .5;
+    color: #f2f2f2;
+}
+
+.max-line {
+    opacity: .5;
+    color: #f2f2f2;
+}

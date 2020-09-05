@@ -7,7 +7,7 @@ namespace Slonyaka\Market;
 
 use Slonyaka\Market\Chart\Line;
 
-class ChartLoader {
+class ChartFactory {
 
 	public function createLine($data)
 	{

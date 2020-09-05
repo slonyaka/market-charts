@@ -73,9 +73,16 @@ class Svg {
 		$this->labels[] = '<text x="'. $x .'" y="'. $y .'">'. $value .'</text>';
 	}
 
-	public function addLine($x1, $y1, $x2, $y2, $class = 'line')
+	public function addLine($x1, $y1, $x2, $y2, $class = 'line', $dash = null)
 	{
-		$this->lines[] = '<line x1="'. $x1 .'" y1="'. $y1 .'" x2="'. $x2 .'" y2="'. $y2 .'" class="'. $class .'" stroke="black" />';
+		$dasharray = '';
+
+		if (!is_null($dash))
+		{
+			$dasharray = 'stroke-dasharray="'. $dash .'"';
+		}
+
+		$this->lines[] = '<line x1="'. $x1 .'" y1="'. $y1 .'" x2="'. $x2 .'" y2="'. $y2 .'" class="'. $class .'" stroke="black" '. $dasharray .' />';
 	}
 
 	public function addVerticalLine($x, $y, $class = 'v-line')
@@ -83,9 +90,9 @@ class Svg {
 		$this->addLine($x, 0, $x, $y, $class);
 	}
 
-	public function addHorizontalLine($x, $y, $class = 'h-line')
+	public function addHorizontalLine($x, $y, $class = 'h-line', $dash = null)
 	{
-		$this->addLine(0, $y, $x, $y, $class);
+		$this->addLine(0, $y, $x, $y, $class, $dash);
 	}
 
 	public function defs()
