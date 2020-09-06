@@ -15,9 +15,13 @@ class Line implements Chart
 	private $offset = 20;
 	private $priceType = 'closePrice';
 	private $styles = __DIR__ . '/../assets/line.css';
+	private $period;
 
 	public function __construct($data)
 	{
+		if (!empty($data[1]) && $data[1]['time'] < $data[0]['time']) {
+			$data = array_reverse($data);
+		}
 		$this->data = $data;
 	}
 
@@ -44,6 +48,11 @@ class Line implements Chart
 	public function setPriceType(string $priceType)
 	{
 		$this->priceType = $priceType;
+	}
+
+	public function setPeriod(string $period)
+	{
+		$this->period = $period;
 	}
 
 	public function build() {
@@ -80,7 +89,12 @@ class Line implements Chart
 			}
 
 			if ($index == count($this->data) - 1) {
-				$this->addLastPrice($svg, $x , $y + 2);
+				$this->addLastPrice($svg, $x , $y + 2, $item[$this->priceType]);
+			}
+
+			if ($index % 6 == 0) {
+				$svg->addLabel($item['time'], $x, $this->height );
+				$svg->addVerticalLine($x, $height,'grid-line');
 			}
 		}
 
@@ -100,7 +114,8 @@ class Line implements Chart
 		return $output;
 	}
 
-	protected function getMin() {
+	protected function getMin()
+	{
 
 		$min = null;
 
@@ -113,7 +128,8 @@ class Line implements Chart
 		return $min;
 	}
 
-	protected function getMax() {
+	protected function getMax()
+	{
 
 		$max = null;
 
@@ -138,13 +154,12 @@ class Line implements Chart
 		$svg->addHorizontalLine($width, $this->offset, 'max-line', 4);
 	}
 
-	private function addLastPrice(Svg $svg, $x, $y)
-	{
-		$data = end($this->data);
 
+	private function addLastPrice(Svg $svg, $x, $y, $value)
+	{
 		$width = $this->width - $this->offset;
 
-		$svg->addLabel($data[$this->priceType], $width, $y );
+		$svg->addLabel($value, $width, $y );
 		$svg->addLine($x, $y,$width, $y, 'current-line');
 	}
 }
