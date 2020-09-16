@@ -55,7 +55,7 @@ class Line implements Chart
 		return $this;
 	}
 
-	public function setPeriod(string $period)
+	public function setPeriod(int $period)
 	{
 		$this->period = $period;
 		return $this;
