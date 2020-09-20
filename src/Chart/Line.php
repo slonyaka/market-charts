@@ -111,7 +111,7 @@ class Line implements Chart
 
 	protected function styles()
 	{
-		return '<style>'. file_get_contents($this->styles) .'</style>';
+		return '<style>'. @file_get_contents($this->styles) .'</style>';
 	}
 
 	protected function getMin()
@@ -154,17 +154,17 @@ class Line implements Chart
 		$svg->addHorizontalLine($width, $this->offset, 'max-line', 4);
 	}
 
-	private function isLastItem($index)
+	protected function isLastItem($index)
 	{
 		return $index == count($this->data) - 1;
 	}
 
-	private function isPeriod($index)
+	protected function isPeriod($index)
 	{
 		return $index % ($this->period - 1) == 0;
 	}
 
-	private function addLastPrice(Svg $svg, $x, $y, $value)
+	protected function addLastPrice(Svg $svg, $x, $y, $value)
 	{
 		$width = $this->width - $this->offset;
 
