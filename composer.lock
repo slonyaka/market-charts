@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b34478965347ac81c9a2a4466a3f54ef",
+    "content-hash": "de3ce6d0ad4e1e2cb42924aa88576d86",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -350,16 +350,16 @@
         },
         {
             "name": "slonyaka/market-rates",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slonyaka/market-rates.git",
-                "reference": "84116fda5d820309408efedd7f56ea0edd1abf00"
+                "reference": "eae1d3279fbf8ef07e3ac236bbcd72003620a9d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slonyaka/market-rates/zipball/84116fda5d820309408efedd7f56ea0edd1abf00",
-                "reference": "84116fda5d820309408efedd7f56ea0edd1abf00",
+                "url": "https://api.github.com/repos/slonyaka/market-rates/zipball/eae1d3279fbf8ef07e3ac236bbcd72003620a9d0",
+                "reference": "eae1d3279fbf8ef07e3ac236bbcd72003620a9d0",
                 "shasum": ""
             },
             "require": {
@@ -381,7 +381,7 @@
                     "email": "slonchakov@gmail.com"
                 }
             ],
-            "time": "2020-09-20T08:49:40+00:00"
+            "time": "2020-09-20T11:32:22+00:00"
         }
     ],
     "packages-dev": [],

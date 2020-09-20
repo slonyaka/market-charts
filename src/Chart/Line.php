@@ -2,6 +2,7 @@
 
 namespace Slonyaka\Market\Chart;
 
+use Slonyaka\Market\Collection;
 use Slonyaka\Market\Svg\Path;
 use Slonyaka\Market\Svg\Svg;
 
@@ -17,11 +18,8 @@ class Line implements Chart
 	private $styles = __DIR__ . '/../assets/line.css';
 	private $period = 6;
 
-	public function __construct($data)
+	public function __construct(Collection $data)
 	{
-		if (!empty($data[1]) && $data[1]['time'] < $data[0]['time']) {
-			$data = array_reverse($data);
-		}
 		$this->data = $data;
 	}
 
@@ -75,18 +73,25 @@ class Line implements Chart
 
 		$this->addLimits($svg, $min, $max);
 
-		$interval = ($this->width - $this->offset *2) / (count($this->data) - 1);
+		$interval = ($this->width - $this->offset *2) / ($this->data->count() - 1);
 
 		$verticalPoint = ($max - $min) / $height;
 
-		foreach ($this->data as $index => $item) {
+		foreach ($this->data->readfromEnd() as $index => $item) {
 
 			$x = $index * $interval;
-			$y = $this->height - (($item[$this->priceType] - $min) / $verticalPoint);
+			$y = $this->height - (($item->{$this->priceType} - $min) / $verticalPoint);
 			$y2 = $y + 2;
 
 			if ($this->isPeriod($index)) {
-				$svg->addLabel($item['time'], $x, $this->height );
+
+				if ($index == 0) {
+					$xPos = $x;
+				} else {
+					$xPos = $x - $this->offset;
+				}
+
+				$svg->addLabel($item->time, $xPos, $this->height );
 				$svg->addVerticalLine($x, $height,'grid-line');
 			}
 
@@ -100,7 +105,7 @@ class Line implements Chart
 			}
 
 			if ($this->isLastItem($index)) {
-				$this->addLastPrice($svg, $x , $y2, $item[$this->priceType]);
+				$this->addLastPrice($svg, $x , $y2, $item->{$this->priceType});
 			}
 		}
 
@@ -119,9 +124,9 @@ class Line implements Chart
 
 		$min = null;
 
-		foreach($this->data as $item) {
-			if ($min === null || $min > $item['lowPrice']) {
-				$min = $item['lowPrice'];
+		foreach($this->data->readfromEnd() as $item) {
+			if ($min === null || $min > $item->lowPrice) {
+				$min = $item->lowPrice;
 			}
 		}
 
@@ -133,9 +138,9 @@ class Line implements Chart
 
 		$max = null;
 
-		foreach($this->data as $item) {
-			if ($max === null || $max < $item['highPrice']) {
-				$max = $item['highPrice'];
+		foreach($this->data->readfromEnd() as $item) {
+			if ($max === null || $max < $item->highPrice) {
+				$max = $item->highPrice;
 			}
 		}
 
@@ -147,8 +152,8 @@ class Line implements Chart
 		$width = $this->width - $this->offset;
 		$height = $this->height - $this->offset;
 
-		$svg->addLabel($min, $width, $height);
-		$svg->addLabel($max, $width, $this->offset);
+		$svg->addLabel($min, $width - $this->offset, $height);
+		$svg->addLabel($max, $width - $this->offset, $this->offset);
 
 		$svg->addHorizontalLine($width, $height, 'min-line', 4);
 		$svg->addHorizontalLine($width, $this->offset, 'max-line', 4);
@@ -156,7 +161,7 @@ class Line implements Chart
 
 	protected function isLastItem($index)
 	{
-		return $index == count($this->data) - 1;
+		return $index == $this->data->count() - 1;
 	}
 
 	protected function isPeriod($index)
@@ -168,7 +173,7 @@ class Line implements Chart
 	{
 		$width = $this->width - $this->offset;
 
-		$svg->addLabel($value, $width, $y );
-		$svg->addLine($x, $y,$width, $y, 'current-line');
+		$svg->addLabel($value, $width - $this->offset, $y );
+		$svg->addLine($x, $y,$width - $this->offset, $y, 'current-line');
 	}
 }

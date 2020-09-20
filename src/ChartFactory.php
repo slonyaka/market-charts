@@ -9,7 +9,7 @@ use Slonyaka\Market\Chart\Line;
 
 class ChartFactory {
 
-	public function createLine($data)
+	public function createLine(Collection $data): Line
 	{
 		return new Line($data);
 	}
