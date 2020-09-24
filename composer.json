@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "slonyaka/market-rates": "^1.1"
+        "slonyaka/market-rates": "^1.1.3"
     },
     "autoload": {
         "psr-4": {

@@ -15,6 +15,12 @@ class Path {
 	private $points;
 	private $lastPoint;
 	private $mask;
+	private $cssClass = '';
+
+	public function setCssClass($cssClass)
+    {
+        $this->cssClass = $cssClass;
+    }
 
 	public function setStart($x, $y)
 	{
@@ -39,7 +45,7 @@ class Path {
 
 	public function draw()
 	{
-		$path = '<path d="'. $this->start .' '. $this->points .'"';
+		$path = '<path class="'. $this->cssClass .'" d="'. $this->start .' '. $this->points .'"';
 
 		if (!empty($this->mask)) {
 			$path .= 'mask="'. $this->mask .'"';

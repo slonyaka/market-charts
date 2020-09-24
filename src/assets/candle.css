@@ -1,0 +1,35 @@
+path {
+    stroke-width: 1;
+    stroke: #000;
+    fill: #222;
+}
+
+path.white {
+    fill: #fff;
+}
+
+
+text {
+    font-size: 11px;
+}
+
+.min-line {
+    opacity: .5;
+    stroke: #222;
+}
+
+.max-line {
+    opacity: .5;
+    stroke: #222;
+}
+
+.current-line {
+    color: #0f0;
+    stroke: #0f0;
+    stroke-width: 2px;
+}
+
+.grid-line {
+    opacity: .4;
+    stroke: #999;
+}
