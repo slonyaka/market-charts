@@ -1,31 +1,20 @@
-##Usage
+# Usage
 
-Create instance of chart factory
+Create an instance of chart factory
 ---
 ``` 
 $chartFactory = new \Slonyaka\Market\ChartFactory(); 
 ```
 
-Chart can receive an array to print chart. Array item must contain time and set of prices.
+Chart can receive an instance of Slonyaka\Market\Collection with MarketData to print chart. 
 ---
-```
-$data = [
-   
-   	[
-   		'time' => '2020-08-18',
-   		'closePrice' => 1.11,
-   		'highPrice' => 1.14,
-   		'lowPrice' => 1.02,
-   		'openPrice' => 1.08
-   	],
-];
-   	
-```
 
 With these data we can get concrete chart type. Line shaped chart:
 ---
 ```
-
+$rates = new Slonyaka\Market\CurrencyRate();
+$rates->setApiKey('api_key');
+$data = $rates->getRates('usd', 'eur', '5min');
 $chart = $chartFactory->createLine($data);
 
 ```
