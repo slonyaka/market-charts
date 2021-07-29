@@ -9,13 +9,12 @@ $chartFactory = new \Slonyaka\Market\ChartFactory();
 Chart can receive an instance of Slonyaka\Market\Collection with MarketData to print chart. 
 ---
 
-With these data we can get concrete chart type. Line shaped chart:
+With these data we can build chart. Line shaped chart:
 ---
 ```
-$rates = new Slonyaka\Market\CurrencyRate();
-$rates->setApiKey('api_key');
-$data = $rates->getRates('usd', 'eur', '5min');
-$chart = $chartFactory->createLine($data);
+$rates = Slonyaka\Market\CurrencyRateFactory::make('alpha_vantage_api_key');
+$ratesCollection = $rates->getRates('usd', 'eur', '5min');
+$chart = $chartFactory->createLine($ratesCollection);
 
 ```
 
