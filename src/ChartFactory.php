@@ -8,14 +8,15 @@ namespace Slonyaka\Market;
 use Slonyaka\Market\Chart\Candle;
 use Slonyaka\Market\Chart\Line;
 
-class ChartFactory {
+class ChartFactory
+{
 
-	public function createLine(Collection $data): Line
-	{
-		return new Line($data);
-	}
+    public function createLine(Collection $data): Line
+    {
+        return new Line($data);
+    }
 
-	public function createCandle(Collection $data): Candle
+    public function createCandle(Collection $data): Candle
     {
         return new Candle($data);
     }

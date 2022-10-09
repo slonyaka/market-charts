@@ -7,16 +7,23 @@ namespace Slonyaka\Market\Chart;
 use Slonyaka\Market\Collection;
 use Slonyaka\Market\Svg\Svg;
 
-abstract class Chart {
+abstract class Chart
+{
 
     protected $data;
 
     protected $width = 400;
+
     protected $height = 400;
+
     protected $offset = 20;
+
     protected $innerHeight = 360;
+
     protected $priceType = 'closePrice';
+
     protected $styles = __DIR__ . '/../assets/line.css';
+
     protected $period = 6;
 
     protected $indicators = [];
@@ -71,7 +78,7 @@ abstract class Chart {
 
     protected function styles()
     {
-        return '<style>'. @file_get_contents($this->styles) .'</style>';
+        return '<style>' . @file_get_contents($this->styles) . '</style>';
     }
 
     protected function getMin()
@@ -79,7 +86,7 @@ abstract class Chart {
 
         $min = null;
 
-        foreach($this->data->readfromEnd() as $item) {
+        foreach ($this->data->reverseRead() as $item) {
             if ($min === null || $min > $item->lowPrice) {
                 $min = $item->lowPrice;
             }
@@ -93,7 +100,7 @@ abstract class Chart {
 
         $max = null;
 
-        foreach($this->data->readfromEnd() as $item) {
+        foreach ($this->data->reverseRead() as $item) {
             if ($max === null || $max < $item->highPrice) {
                 $max = $item->highPrice;
             }
@@ -124,6 +131,8 @@ abstract class Chart {
     }
 
 
-	abstract public function build();
-	abstract protected function addLastPrice(Svg $svg, $x, $y, $value);
+    abstract public function build();
+
+    abstract protected function addLastPrice(Svg $svg, $x, $y, $value);
+
 }

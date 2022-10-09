@@ -8,63 +8,65 @@ use Slonyaka\Market\Svg\Svg;
 
 class Line extends Chart
 {
-	public function build()
-	{
-		$svg = new Svg($this->width, $this->height);
-		$path = new Path();
-		$pathOutline = new Path();
 
-		$min = $this->getMin();
-		$max = $this->getMax();
+    public function build()
+    {
+        $svg = new Svg($this->width, $this->height);
+        $path = new Path();
+        $pathOutline = new Path();
 
-		$this->addLimits($svg, $min, $max);
+        $min = $this->getMin();
+        $max = $this->getMax();
 
-		$interval = ($this->width - $this->offset *2) / ($this->data->count() - 1);
+        $this->addLimits($svg, $min, $max);
 
-		$verticalPoint = ($max - $min) / $this->innerHeight;
+        $interval = ($this->width - $this->offset * 2) / ($this->data->count() - 1);
 
-		foreach ($this->data->readfromEnd() as $index => $item) {
+        $verticalPoint = ($max - $min) / $this->innerHeight;
 
-			$x = $index * $interval;
-			$y = $this->height - (($item->{$this->priceType} - $min) / $verticalPoint);
-			$y2 = $y + 2;
+        foreach ($this->data->reverseRead() as $index => $item) {
 
-			if ($this->isPeriod($index)) {
+            $x = $index * $interval;
+            $y = $this->height - (($item->{$this->priceType} - $min) / $verticalPoint);
+            $y2 = $y + 2;
 
-				if ($index == 0) {
-					$xPos = $x;
-				} else {
-					$xPos = $x - $this->offset;
-				}
+            if ($this->isPeriod($index)) {
 
-				$svg->addLabel($item->time, $xPos, $this->height );
-				$svg->addVerticalLine($x, $this->innerHeight,'grid-line');
-			}
+                if ($index == 0) {
+                    $xPos = $x;
+                } else {
+                    $xPos = $x - $this->offset;
+                }
 
-			if ($index == 0) {
-				$path->setStart($x, $y);
-				$pathOutline->setStart($x, $y2);
-				continue;
-			} else {
-				$path->addPoint($x, $y);
-				$pathOutline->addPoint($x , $y2);
-			}
+                $svg->addLabel($item->time, $xPos, $this->height);
+                $svg->addVerticalLine($x, $this->innerHeight, 'grid-line');
+            }
 
-			if ($this->isLastItem($index)) {
-				$this->addLastPrice($svg, $x , $y2, $item->{$this->priceType});
-			}
-		}
+            if ($index == 0) {
+                $path->setStart($x, $y);
+                $pathOutline->setStart($x, $y2);
+                continue;
+            } else {
+                $path->addPoint($x, $y);
+                $pathOutline->addPoint($x, $y2);
+            }
 
-		$path->close($this->innerHeight);
+            if ($this->isLastItem($index)) {
+                $this->addLastPrice($svg, $x, $y2, $item->{$this->priceType});
+            }
+        }
 
-		return $this->styles() . $svg->setPaths([$path, $pathOutline])->draw();
-	}
+        $path->close($this->innerHeight);
 
-	protected function addLastPrice(Svg $svg, $x, $y, $value)
-	{
-		$width = $this->width - $this->offset;
+        return $this->styles() . $svg->setPaths([$path, $pathOutline])->draw();
+    }
 
-		$svg->addLabel($value, $width - $this->offset, $y );
-		$svg->addLine($x, $y,$width - $this->offset, $y, 'current-line');
-	}
+    protected function addLastPrice(Svg $svg, $x, $y, $value)
+    {
+        $width = $this->width - $this->offset;
+
+        $svg->addLabel($value, $width - $this->offset, $y);
+        $svg->addLine($x, $y, $width - $this->offset, $y, 'current-line');
+    }
+
 }

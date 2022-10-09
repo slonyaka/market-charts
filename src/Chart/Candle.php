@@ -27,8 +27,7 @@ class Candle extends Chart
 
         $verticalPoint = ($max - $min) / $this->innerHeight;
 
-        foreach ($this->data->readfromEnd() as $index => $item) {
-
+        foreach ($this->data->reverseRead() as $index => $item) {
 
             if ($item->openPrice > $item->closePrice) {
                 $topPrice = $item->openPrice;
@@ -55,8 +54,8 @@ class Candle extends Chart
                     $xPos = $x - $this->offset;
                 }
 
-                $svg->addLabel($item->time, $xPos, $this->height );
-                $svg->addVerticalLine($x, $this->innerHeight,'grid-line');
+                $svg->addLabel($item->time, $xPos, $this->height);
+                $svg->addVerticalLine($x, $this->innerHeight, 'grid-line');
             }
 
             $path = new Path();
@@ -79,7 +78,7 @@ class Candle extends Chart
 
             if ($this->isLastItem($index)) {
                 $y = $this->height - (($item->{$this->priceType} - $min) / $verticalPoint);
-                $this->addLastPrice($svg, $x , $y, $item->{$this->priceType});
+                $this->addLastPrice($svg, $x, $y, $item->{$this->priceType});
             }
         }
 
@@ -89,6 +88,7 @@ class Candle extends Chart
     protected function addLastPrice(Svg $svg, $x, $y, $value)
     {
         $width = $this->width - $this->offset;
-        $svg->addLabel($value, $width - $this->offset + 4, $y );
+        $svg->addLabel($value, $width - $this->offset + 4, $y);
     }
+
 }
